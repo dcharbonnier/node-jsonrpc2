@@ -229,6 +229,17 @@ module.exports = {
       expect(decoded.error.message).to.equal('This is an error');
       expect(decoded.error.code).to.equal(-32603);
       expect(decoded.result).to.equal(undefined);
+    },
+
+    'Notification request': function () {
+      var testJSON = '{ "method": "notify_test", "params": ["Hello, World!"] }';
+      var req = new MockRequest('POST');
+      var res = new MockResponse();
+      server.handleHttp(req, res);
+      req.emit('data', testJSON);
+      req.emit('end');
+      expect(res.httpCode).to.equal(200);
+      expect(res.httpBody).to.equal('');
     }
   }
 };
